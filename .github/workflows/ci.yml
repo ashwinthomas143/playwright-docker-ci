@@ -1,0 +1,43 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Job 1: run the suite on the runner, as a baseline.
+  native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: report-native
+          path: playwright-report/
+
+  # Job 2: build the image and run the same suite inside the container.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t playwright-docker-ci .
+      - name: Run tests in the container
+        run: |
+          mkdir -p playwright-report
+          docker run --rm --ipc=host \
+            -v "$PWD/playwright-report:/app/playwright-report" \
+            playwright-docker-ci
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: report-docker
+          path: playwright-report/

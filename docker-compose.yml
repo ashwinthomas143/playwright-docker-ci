@@ -1,0 +1,9 @@
+services:
+  tests:
+    build: .
+    # ipc: host avoids Chromium crashes from the container's small shared memory.
+    ipc: host
+    volumes:
+      # Reports land on the host so you can open them after the run.
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results

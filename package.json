@@ -1,0 +1,18 @@
+{
+  "name": "playwright-docker-ci",
+  "version": "1.0.0",
+  "description": "A small Playwright/TypeScript suite that runs the same way locally, in Docker, and in GitHub Actions.",
+  "scripts": {
+    "test": "playwright test",
+    "docker:build": "docker build -t playwright-docker-ci .",
+    "docker:test": "docker compose run --rm tests"
+  },
+  "author": "Thomas Ashwin Varghese",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0"
+  }
+}
