@@ -26,9 +26,11 @@ docker compose run --rm tests   # in a container (needs Docker)
 
 ## Verification status (keep this honest)
 - Local run: 4 of 4 tests pass (2026-09-25).
-- Docker build and container run: **not yet verified.** Docker was not
-  installed on the author's machine when this was written. The `docker`
-  job in CI is the first real check; this line changes when it goes green.
+- Docker build and container run: **verified in CI on 2026-09-26.** Both
+  the `native` and `docker` jobs pass on GitHub Actions (the `docker` job
+  builds the image and runs the suite inside it).
+- Not covered: production deployment, orchestration or Kubernetes. This
+  is a small packaging project, not infrastructure experience.
 
 ## Why these choices
 - Official Playwright image instead of installing browsers into a base
